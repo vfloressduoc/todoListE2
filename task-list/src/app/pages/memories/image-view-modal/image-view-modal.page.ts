@@ -1,37 +1,32 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { Component, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-image-view-modal',
   templateUrl: './image-view-modal.page.html',
   styleUrls: ['./image-view-modal.page.scss'],
 })
-export class ImageViewModalPage implements OnInit {
+export class ImageViewModalPage {
 
   @Input() imageUrl: string = '';
   @Input() memoryId: string = '';
 
-  constructor(
-    private modalController: ModalController,
-    private navParams: NavParams
-  ) {}
+  constructor(private modalController: ModalController, private toastController: ToastController) {}
 
-  ngOnInit() {
-    this.imageUrl = this.navParams.get('imageUrl');
-    this.memoryId = this.navParams.get('memoryId');
-  }
 
   close() {
     this.modalController.dismiss();
   }
 
   share() {
-    // Implementación de compartir (mock, por ejemplo, mostrar un mensaje)
     console.log('Compartiendo imagen:', this.imageUrl);
+    const successMessage = 'Memoria compartida con éxito!';
+    this.toastController.create({ message: successMessage, duration: 2000 }).then(toast => toast.present());
   }
+  
 
   delete() {
-    // Implementación de borrar (puedes implementar la lógica para borrar la imagen aquí)
     console.log('Eliminando imagen:', this.memoryId);
     this.modalController.dismiss({ deleted: true });
   }

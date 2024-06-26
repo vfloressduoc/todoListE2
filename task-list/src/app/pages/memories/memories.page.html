@@ -1,33 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-item lines="none">
-      <ion-label style="font-weight: 800;font-size: 3em;">
+      <ion-label class="title-text">
         Memorias
       </ion-label>
     </ion-item>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content>
+<ion-content class="archive-content">
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let memory of memories">
-        <ion-card>
-          <img [src]="memory.thumbnailUrl" (click)="viewImage(memory)" />
+        <ion-card class="thumbnail-container">
+          <img [src]="memory.thumbnailUrl" class="thumbnail-image" (click)="viewImage(memory)" />
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addMemory()">
+    <ion-fab-button (click)="takePicture()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</ion-content> -->
-
-<ion-content [fullscreen]="true">
-  <div id="container">
-    <img src="{{imageSource}}" style="width: 400px;" />
-    <ion-button (click)="takePicture()">Camara</ion-button>"
-  </div>
 </ion-content>

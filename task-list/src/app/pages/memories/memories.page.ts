@@ -1,82 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-// import { CameraService } from '../../services/camera.service';
-// import { ModalController } from '@ionic/angular';
-// import { ImageViewModalPage } from './image-view-modal/image-view-modal.page';
+import { ModalController } from '@ionic/angular';
+import { ImageViewModalPage } from './image-view-modal/image-view-modal.page';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+interface Memory {
+  id: number;
+  thumbnailUrl: SafeResourceUrl;
+}
 
 @Component({
   selector: 'app-memories',
   templateUrl: './memories.page.html',
   styleUrls: ['./memories.page.scss'],
 })
-export class MemoriesPage {
+export class MemoriesPage implements OnInit {
 
+  memories: Memory[] = [];
+  imageSource: SafeResourceUrl | undefined;
 
-  imageSource: any
-  constructor() { }
+  constructor(
+    private modalController: ModalController,
+    private domSanitizer: DomSanitizer,
+  ) {}
 
-  takePicture = async() => {
-    const image = await Camera.getPhoto({
-      quality : 90,
-      allowEditing : false,
-      resultType : CameraResultType.DataUrl,
-      source : CameraSource.Prompt
-    });
-
-    this.imageSource = image.dataUrl;
-
+  ngOnInit() {
+    this.loadDefaultMemories();
   }
 
-// implements OnInit {
+  loadDefaultMemories() {
+    // Cargar imágenes desde assets como ejemplos
+    for (let i = 1; i <= 9; i++) {
+      const imageUrl = `assets/photos/photo${i}.jpg`;
+      this.memories.push({
+        id: i,
+        thumbnailUrl: this.domSanitizer.bypassSecurityTrustResourceUrl(imageUrl)
+      });
+    }
+  }
 
-//   memories: any[] = [];
+  async takePicture() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
+        saveToGallery: false
+      });
 
-//   constructor(
-//     private cameraService: CameraService,
-//     private modalController: ModalController
-//   ) {}
+      this.imageSource = this.domSanitizer.bypassSecurityTrustResourceUrl(image.webPath ? image.webPath : '');
+      if (this.imageSource) {
+        const newMemory: Memory = {
+          id: this.memories.length + 1,
+          thumbnailUrl: this.imageSource
+        };
+        this.memories.push(newMemory);
+      }
+    } catch (error) {
+      console.error('Error al tomar la imagen', error);
+    }
+  }
 
-//   ngOnInit() {
-//     this.loadMemories();
-//   }
+  removeMemory(memoryId: number) {
+    this.memories = this.memories.filter(memory => memory.id !== memoryId);
+  }
 
-//   loadMemories() {
-//     this.cameraService.getMemories().subscribe(
-//       (data) => {
-//         this.memories = data;
-//       },
-//       (error) => {
-//         console.error('Error fetching memories', error);
-//       }
-//     );
-//   }
+  async viewImage(memory: Memory) {
+    const modal = await this.modalController.create({
+      component: ImageViewModalPage,
+      componentProps: {
+        imageUrl: memory.thumbnailUrl,
+        memoryId: memory.id
+      }
+    });
 
-//   async addMemory() {
-//     // Implementación de añadir memoria
-//   }
+    modal.onDidDismiss().then((data) => {
+      if (data.data && data.data.deleted) {
+        this.removeMemory(memory.id);
+      }
+    });
 
-//   deleteMemory(memoryId: string) {
-//     // Implementación de borrar memoria
-//   }
-
-//   async viewImage(memory: any) {
-//     const modal = await this.modalController.create({
-//       component: ImageViewModalPage,
-//       componentProps: {
-//         imageUrl: memory.url,
-//         memoryId: memory.id
-//       }
-//     });
-//     modal.onDidDismiss().then((data) => {
-//       if (data.data && data.data.deleted) {
-//         this.loadMemories(); // Recargar memorias si se eliminó una imagen
-//       }
-//     });
-//     return await modal.present();
-//   }
-
-//   shareMemory(memory: any) {
-//     // Implementación de compartir (mock, por ejemplo, mostrar un mensaje)
-//     console.log('Compartiendo memoria:', memory);
-//   }
+    return await modal.present();
+  }
 }

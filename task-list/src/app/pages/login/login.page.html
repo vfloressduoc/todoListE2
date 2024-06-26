@@ -21,14 +21,15 @@
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input [(ngModel)]="password" type="password"></ion-input>
       </ion-item>
-    </div>
-    <div class="landing-buttons">
-      <ion-button expand="block" color="primary" (click)="login()" shape="round">
-        Iniciar sesión
-      </ion-button>
-      <ion-button expand="block" color="secondary" fill="clear" (click)="goToSignUp()" shape="round">
-        ¿Nuevo aquí? ¡Crea tu cuenta!
-      </ion-button>
+
+      <div class="landing-buttons">
+        <ion-button expand="block" color="primary" (click)="login()" shape="round">
+          Iniciar sesión
+        </ion-button>
+        <ion-button expand="block" color="secondary" fill="clear" (click)="goToSignUp()" shape="round">
+          ¿Nuevo aquí? ¡Crea tu cuenta!
+        </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>
