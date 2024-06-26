@@ -1,0 +1,20 @@
+ion-title {
+    text-align: center; 
+    width: 100%; 
+  }
+  
+  .title-text {
+    font-weight: 500; /* Ajusta el peso de la fuente del título */
+    font-size: 1.3em; /* Ajusta el tamaño de la fuente del título */
+  }
+  
+  .date-container {
+    margin-top: -10px; /* Ajuste para mover la fecha hacia arriba */
+  }
+  
+  .date-text {
+    font-weight: 400; /* Aplica peso normal al texto de la fecha */
+    color: #433465; /* Color específico para el texto de la fecha */
+    font-size: 1em; /* Reducir el tamaño de la fuente de la fecha */
+  }
+  

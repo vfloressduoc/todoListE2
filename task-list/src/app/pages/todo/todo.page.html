@@ -1,13 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-item lines="none">
-      <ion-label style="font-weight: 800;font-size: 3em;">
-        Esta semana
-        <p style="font-weight: 400; color: #433465;">{{today | date:'fullDate'}}</p>
+      <ion-label style="font-weight: 600; font-size: 2.4em;" class="title-text">
+        Cosas por hacer
       </ion-label>
+    </ion-item>
+    <ion-item lines="none" class="date-container">
+      <ion-label class="date-text" color="medium">{{ today | date:'fullDate' }}</ion-label>
     </ion-item>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
 

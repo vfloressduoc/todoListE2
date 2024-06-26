@@ -1,0 +1,16 @@
+ion-menu {
+    ion-content {
+      ion-list {
+        ion-menu-toggle {
+          ion-item {
+            font-size: 1.2em;
+            text-align: center;
+            padding: 16px 32px;
+            margin-bottom: 10px;
+            font-weight: bold !important;
+          }
+        }
+      }
+    }
+  }
+  

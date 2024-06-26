@@ -31,6 +31,18 @@ const routes: Routes = [
     path: 'edit-task',
     loadChildren: () => import('./pages/edit-task/edit-task.module').then( m => m.EditTaskPageModule)
   },
+  {
+    path: 'memories',
+    loadChildren: () => import('./pages/memories/memories.module').then( m => m.MemoriesPageModule)
+  },
+  {
+    path: 'week',
+    loadChildren: () => import('./pages/week/week.module').then( m => m.WeekPageModule)
+  },
+  {
+    path: 'archive',
+    loadChildren: () => import('./pages/archive/archive.module').then( m => m.ArchivePageModule)
+  },
 
 
 ];

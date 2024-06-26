@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Imagen</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="share()">
+        <ion-icon name="share"></ion-icon>
+      </ion-button>
+      <ion-button (click)="delete()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="image-container">
+    <img [src]="imageUrl" />
+  </div>
+</ion-content>
