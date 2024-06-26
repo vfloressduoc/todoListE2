@@ -1,69 +1,67 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { TaskService } from '../services/task.service';
 import { AddTaskPage } from '../pages/add-task/add-task.page';
-
-interface Task {
-  itemName: string;
-  itemDate: string;
-  itemPriority: string;
-  itemCategory: string;
-}
+import { Task } from '../models/task.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-
+export class HomePage implements OnInit {
   taskList: Task[] = [];
+  weekTaskList: Task[] = [];
+  archiveList: Task[] = [];
+  today: number = Date.now();
 
-  // taskList = [{
-  //   itemName : 'Task 1',
-  //   itemDate : '2024-06-27',
-  //   itemPriority : 'importante',
-  //   itemCategory : 'UNI' 
-  // },
-  // {
-  //   itemName : 'Task 2: Video',
-  //   itemDate : '2024-06-26',
-  //   itemPriority : 'importante',
-  //   itemCategory : 'UNI' 
-  // },
-  // {
-  //   itemName : 'Comprar mercaderia',
-  //   itemDate : '2024-06-27',
-  //   itemPriority : 'baja',
-  //   itemCategory : 'Casa' 
-  // },
-  // {
-  //   itemName : 'Cumpleaños',
-  //   itemDate : '2024-06-29',
-  //   itemPriority : 'normal',
-  //   itemCategory : 'Casa' 
-  // },
-  // ]
+  constructor(private taskService: TaskService, public modalCtrl: ModalController) {}
 
-  today : number = Date.now();
+  ngOnInit() {
+    this.loadTasks();
+  }
 
-  constructor(public modalCtrl:ModalController) {}
+  loadTasks() {
+    this.taskService.getTasks().subscribe(
+      tasks => {
+        const today = new Date();
+        const weekFromToday = new Date();
+        weekFromToday.setDate(today.getDate() + 7);
 
-  async addTask(){
+        this.taskList = tasks.filter(task => !task.completed);
+        this.weekTaskList = tasks.filter(task => {
+          const taskDate = new Date(task.itemDate);
+          return taskDate >= today && taskDate <= weekFromToday && !task.completed;
+        });
+        this.archiveList = tasks.filter(task => task.completed);
+      },
+      error => {
+        console.error('Error loading tasks', error);
+      }
+    );
+  }
+
+  async addTask() {
     const modal = await this.modalCtrl.create({
-      component: AddTaskPage
-    })
+      component: AddTaskPage,
+    });
 
-    modal.onDidDismiss().then(newTaskObj =>{
-      console.log(newTaskObj.data);
-      this.taskList.push(newTaskObj.data);
-    })
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      const newTaskObj: Task = data;
+      this.taskList.push(newTaskObj);
+      this.taskService.updateTask(newTaskObj).subscribe();
+    }
 
     return await modal.present();
-
   }
 
-  delete(index: number){
-    this.taskList.splice(index, 1);
+  completeTask(task: Task) {
+    task.completed = true;
+    this.taskService.updateTask(task).subscribe(() => this.loadTasks());
   }
 
+  deleteTask(task: Task) {
+    this.taskService.deleteTask(task.id).subscribe(() => this.loadTasks());
+  }
 }
