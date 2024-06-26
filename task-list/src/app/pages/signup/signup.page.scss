@@ -1,0 +1,43 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .logo-container {
+    position: fixed; /* Fix the position of the logo */
+    top: 200px; /* Adjust the position as needed */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .logo-img {
+    width: 250px; /* Adjust the width of the logo */
+    height: auto;
+  }
+  
+  .form-container {
+    width: 100%;
+    max-width: 400px; /* Optional: Limit the max width */
+    padding: 0 16px; /* Add padding to align with buttons */
+    margin-top: 200px; /* Adjust the margin to place the form container correctly */
+  }
+  
+  ion-item {
+    width: 100%; /* Make ion-item full width */
+    margin-bottom: 10px; /* Add space between items */
+  }
+  
+  .landing-buttons {
+    width: 100%;
+    max-width: 400px; /* Optional: Limit the max width */
+    padding: 0 16px; /* Adjust the padding to match the full width */
+    margin-top: 20px; /* Add space between form and buttons */
+  
+    ion-button {
+      margin-bottom: 10px; /* Adjust vertical space between buttons */
+    }
+  }
+  

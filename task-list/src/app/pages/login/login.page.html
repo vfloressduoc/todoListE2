@@ -1,7 +1,7 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      ¡Bienvenid&#64;! 
+      ¡Bienvenid&#64;!
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,15 +11,24 @@
     <div class="logo-container">
       <img src="/assets/icon/penguicon.png" class="logo-img" alt="Logo">
     </div>
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input [(ngModel)]="email" type="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input [(ngModel)]="password" type="password"></ion-input>
-    </ion-item>
-    <ion-button expand="block" (click)="login()">Login</ion-button>
-    <ion-button expand="block" fill="clear" (click)="goToSignUp()">Sign Up</ion-button>
+
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
+    </div>
+    <div class="landing-buttons">
+      <ion-button expand="block" color="primary" (click)="login()" shape="round">
+        Iniciar sesión
+      </ion-button>
+      <ion-button expand="block" color="secondary" fill="clear" (click)="goToSignUp()" shape="round">
+        ¿Nuevo aquí? ¡Crea tu cuenta!
+      </ion-button>
+    </div>
   </div>
 </ion-content>

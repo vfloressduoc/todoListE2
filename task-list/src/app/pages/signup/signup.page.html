@@ -1,17 +1,34 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Sign Up</ion-title>
+    <ion-title>
+      ¡Crea tu cuenta!
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-item>
-    <ion-label position="floating">Email</ion-label>
-    <ion-input [(ngModel)]="email" type="email"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Password</ion-label>
-    <ion-input [(ngModel)]="password" type="password"></ion-input>
-  </ion-item>
-  <ion-button expand="block" (click)="signUp()">Sign Up</ion-button>
+<ion-content class="ion-padding">
+  <div class="content-container">
+    <div class="logo-container">
+      <img src="/assets/icon/penguicon.png" class="logo-img" alt="Logo">
+    </div>
+
+    <div class="form-container">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input [(ngModel)]="email" type="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
+    </div>
+    <div class="landing-buttons">
+      <ion-button expand="block" color="primary" (click)="signUp()" shape="round">
+        Crear Cuenta
+      </ion-button>
+      <ion-button expand="block" color="secondary" fill="clear" (click)="goToLogin()" shape="round">
+        Volver a inicio de sesión
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
