@@ -1,18 +1,25 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>
+      ¡Bienvenid&#64;! 
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-item>
-    <ion-label position="floating">Email</ion-label>
-    <ion-input [(ngModel)]="email" type="email"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Password</ion-label>
-    <ion-input [(ngModel)]="password" type="password"></ion-input>
-  </ion-item>
-  <ion-button expand="block" (click)="login()">Login</ion-button>
-  <ion-button expand="block" fill="clear" (click)="goToSignUp()">Sign Up</ion-button>
+<ion-content class="ion-padding">
+  <div class="content-container">
+    <div class="logo-container">
+      <img src="/assets/icon/penguicon.png" class="logo-img" alt="Logo">
+    </div>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input [(ngModel)]="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="login()">Login</ion-button>
+    <ion-button expand="block" fill="clear" (click)="goToSignUp()">Sign Up</ion-button>
+  </div>
 </ion-content>

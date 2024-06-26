@@ -32,19 +32,15 @@
         </ion-modal>
     </ion-item>
 
-  
     <ion-item>
-      <ion-icon name="pricetag-outline" slot="start"></ion-icon>
       <ion-label>Categoria</ion-label>
-      <span>{{taskCategory}}</span>
     </ion-item>
 
     <ion-item>
-      <ion-chip *ngFor="let category of categories; let i = index" (click)="selectedCategory(i)">
-        <ion-label>{{category}}</ion-label>
+      <ion-chip *ngFor="let category of categories; let i = index" (click)="selectCategory(i)" [color]="isSelected(i) ? 'primary' : 'light'">
+        <ion-label>{{ category }}</ion-label>
       </ion-chip>
     </ion-item>
-
 
     <ion-button class="ion-margin" expand="block" (click)="AddTask()"> Agregar Tarea </ion-button>
   </ion-card>

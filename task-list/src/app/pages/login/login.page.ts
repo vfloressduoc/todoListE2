@@ -18,7 +18,7 @@ export class LoginPage {
     const users: User[] = usersString ? JSON.parse(usersString) : [];
     const user = users.find(u => u.email === this.email && u.password === this.password);
     if (user) {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/todo');
     } else {
       alert('Invalid credentials');
     }

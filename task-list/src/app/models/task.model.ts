@@ -1,9 +1,10 @@
 export interface Task {
-    id: number;
-    itemName: string;
-    itemDate: string;
-    itemPriority: string;
-    itemCategory: string;
     completed: boolean;
+    description: string | null;
+    id: number;
+    itemCategory: string;
+    itemDate: string;
+    itemName: string;
+    itemPriority: string;
   }
   
