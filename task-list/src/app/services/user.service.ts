@@ -1,43 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
-import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private authenticated: boolean = false;
+  private users: any[] = [];
 
-  constructor(private storage: Storage) {
-    this.init();
-  }
-
-  async init() {
-    await this.storage.create();
-  }
-
-  async addUser(user: User): Promise<any> {
-    return this.storage.set(user.email, user);
-  }
-
-  async getUser(email: string): Promise<User> {
-    return this.storage.get(email);
-  }
-
-  async login(email: string, password: string): Promise<boolean> {
-    const user = await this.getUser(email);
-    if (user && user.password === password) {
-      await this.storage.set('loggedInUser', email);
-      return true;
+  constructor() {
+    const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+      this.users = JSON.parse(storedUsers);
     }
-    return false;
   }
 
-  async logout(): Promise<void> {
-    await this.storage.remove('loggedInUser');
+  login(email: string, password: string): boolean {
+    const user = this.findUserByEmail(email);
+    if (user && user.password === password) {
+      this.authenticated = true;
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+      return true;
+    } else {
+      this.authenticated = false;
+      return false;
+    }
   }
 
-  async isLoggedIn(): Promise<boolean> {
-    const user = await this.storage.get('loggedInUser');
-    return !!user;
+  isAuthenticated(): boolean {
+    return this.authenticated;
+  }
+
+  getCurrentUser(): any {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    return loggedInUser ? JSON.parse(loggedInUser) : null;
+  }
+
+  logout(): void {
+    this.authenticated = false;
+    localStorage.removeItem('loggedInUser');
+  }
+
+  createUser(email: string, password: string): void {
+    const newUser = { email, password };
+    this.users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(this.users));
+  }
+
+  findUserByEmail(email: string): any {
+    return this.users.find((user: any) => user.email === email);
   }
 }

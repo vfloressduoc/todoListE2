@@ -1,45 +1,47 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart, Event as RouterEvent } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Platform } from '@ionic/angular';
+import { Router, NavigationEnd } from '@angular/router';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  showMenu = true;
+  showMenu = false;
 
-  constructor(private router: Router) {
-    this.router.events.pipe(
-      filter((event: RouterEvent): event is NavigationEnd | NavigationStart =>
-        event instanceof NavigationEnd || event instanceof NavigationStart
-      )
-    ).subscribe((event: NavigationEnd | NavigationStart) => {
-      if (event instanceof NavigationEnd) {
-        this.showMenu = this.shouldShowMenu(event.url);
-      } else if (event instanceof NavigationStart) {
-        // Optionally handle NavigationStart events if needed
+  constructor(
+    private platform: Platform,
+    private router: Router,
+    private userService: UserService,
+  ) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser') || 'null');
+      if (loggedInUser) {
+        this.userService.login(loggedInUser.email, loggedInUser.password);
       }
+
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          const currentUrl = this.router.url;
+          this.showMenu = this.shouldShowMenu(currentUrl);
+          if (currentUrl === '/home' && this.userService.isAuthenticated()) {
+            this.router.navigate(['/todo']);
+          } else if (currentUrl === '/home' && !this.userService.isAuthenticated()) {
+            this.router.navigate(['/login']);
+          }
+        }
+      });
     });
   }
 
-  private shouldShowMenu(url: string): boolean {
-    const allowedRoutes = [
-      '/memories',
-      '/todo',
-      '/week',
-      '/archive'
-    ];
-    const excludedRoutes = [
-      '/login',
-      '/signup',
-      '/add-task',
-      '/edit-task'
-    ];
-  
-    return allowedRoutes.some(route => url.startsWith(route))
-      && !excludedRoutes.some(route => url.startsWith(route));
+  shouldShowMenu(url: string): boolean {
+    const hideMenuRoutes = ['/login', '/signup', '/add-task', '/edit-task'];
+    return !hideMenuRoutes.includes(url);
   }
-  
 }

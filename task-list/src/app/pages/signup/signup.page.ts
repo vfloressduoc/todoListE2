@@ -1,56 +1,38 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { User } from 'src/app/models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
 })
-export class SignUpPage {
+export class SignupPage {
   email: string = '';
   password: string = '';
 
   constructor(
     private router: Router,
-    private alertController: AlertController
+    private userService: UserService
   ) {}
 
-  async signUp() {
-    if (!this.validateEmail(this.email) || !this.password) {
-      await this.presentAlert('Correo/contraseña inválidos');
+  signUp() {
+    if (!this.validateEmail(this.email)) {
+      console.log('El formato del correo electrónico no es válido');
       return;
     }
 
-    const usersString = localStorage.getItem('users');
-    const users: User[] = usersString ? JSON.parse(usersString) : [];
-    const userExists = users.some(u => u.email === this.email);
-    if (userExists) {
-      await this.presentAlert('El correo ya está registrado');
-    } else {
-      users.push({ email: this.email, password: this.password });
-      localStorage.setItem('users', JSON.stringify(users));
-      this.router.navigateByUrl('/login');
-    }
+    this.userService.createUser(this.email, this.password);
+    console.log('Usuario creado:', { email: this.email, password: this.password });
+    this.router.navigate(['/login']);
   }
 
   validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   }
 
-  async presentAlert(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: message,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['/login']);
   }
 }

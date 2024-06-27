@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { SignupPageRoutingModule } from './signup-routing.module';
-
-import { SignUpPage } from './signup.page';
+import { SignupPage } from './signup.page';
 
 @NgModule({
   imports: [
@@ -15,6 +12,6 @@ import { SignUpPage } from './signup.page';
     IonicModule,
     SignupPageRoutingModule
   ],
-  declarations: [SignUpPage]
+  declarations: [SignupPage]
 })
 export class SignupPageModule {}

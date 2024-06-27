@@ -1,24 +1,10 @@
+// app-routing.module.ts
+
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    redirectTo: 'todo',
-    pathMatch: 'full',
-    canActivate: [AuthGuard] 
-  },
-  {
-    path: 'add-task',
-    loadChildren: () => import('./pages/add-task/add-task.module').then(m => m.AddTaskPageModule),
-    canActivate: [AuthGuard]
-  },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
@@ -28,8 +14,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule)
   },
   {
-    path: 'todo',
-    loadChildren: () => import('./pages/todo/todo.module').then(m => m.TodoPageModule),
+    path: 'add-task',
+    loadChildren: () => import('./pages/add-task/add-task.module').then(m => m.AddTaskPageModule),
     canActivate: [AuthGuard]
   },
   {
@@ -38,8 +24,18 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'memories',
-    loadChildren: () => import('./pages/memories/memories.module').then(m => m.MemoriesPageModule),
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'todo',
+    loadChildren: () => import('./pages/todo/todo.module').then(m => m.TodoPageModule),
     canActivate: [AuthGuard]
   },
   {
@@ -48,9 +44,18 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'memories',
+    loadChildren: () => import('./pages/memories/memories.module').then(m => m.MemoriesPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'archive',
     loadChildren: () => import('./pages/archive/archive.module').then(m => m.ArchivePageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
   }
 ];
 
