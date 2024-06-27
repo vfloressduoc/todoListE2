@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-
   {
     path: '',
     redirectTo: 'login',
@@ -10,41 +10,48 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    redirectTo: 'todo',
+    pathMatch: 'full',
+    canActivate: [AuthGuard] 
   },
   {
     path: 'add-task',
-    loadChildren: () => import('./pages/add-task/add-task.module').then( m => m.AddTaskPageModule)
+    loadChildren: () => import('./pages/add-task/add-task.module').then(m => m.AddTaskPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'signup',
-    loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
+    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupPageModule)
   },
   {
     path: 'todo',
-    loadChildren: () => import('./pages/todo/todo.module').then( m => m.TodoPageModule)
-  },  {
+    loadChildren: () => import('./pages/todo/todo.module').then(m => m.TodoPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'edit-task',
-    loadChildren: () => import('./pages/edit-task/edit-task.module').then( m => m.EditTaskPageModule)
+    loadChildren: () => import('./pages/edit-task/edit-task.module').then(m => m.EditTaskPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'memories',
-    loadChildren: () => import('./pages/memories/memories.module').then( m => m.MemoriesPageModule)
+    loadChildren: () => import('./pages/memories/memories.module').then(m => m.MemoriesPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'week',
-    loadChildren: () => import('./pages/week/week.module').then( m => m.WeekPageModule)
+    loadChildren: () => import('./pages/week/week.module').then(m => m.WeekPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'archive',
-    loadChildren: () => import('./pages/archive/archive.module').then( m => m.ArchivePageModule)
-  },
-
-
+    loadChildren: () => import('./pages/archive/archive.module').then(m => m.ArchivePageModule),
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
