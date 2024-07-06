@@ -1,6 +1,6 @@
 <ion-content>
   <ion-card>
-    <ion-card-header>
+    <ion-card-header *ngIf="task">
       <ion-card-subtitle>
         <ion-label>{{ task.itemCategory }}</ion-label>
         <ion-label>{{ task.itemName }}</ion-label>
@@ -35,15 +35,11 @@
 
       <ion-item>
         <ion-label>Categoria</ion-label>
-      </ion-item>
-
-      <ion-item>
         <ion-chip *ngFor="let category of categories; let i = index"
           (click)="selectCategory(i)"
-          [color]="isSelected(i) ? 'primary' : 'light'">
-  <ion-label>{{ category }}</ion-label>
-</ion-chip>
-
+          [color]="taskCategory === i ? 'primary' : 'light'">
+          <ion-label>{{ category }}</ion-label>
+        </ion-chip>
       </ion-item>
 
       <ion-button expand="block" (click)="saveChanges()">Guardar Cambios</ion-button>

@@ -11,10 +11,16 @@ import { TaskService } from '../../services/task.service';
   providers: [DatePipe]
 })
 export class EditTaskPage implements OnInit {
-  isSelected(index: number): boolean {
-    return this.taskCategory === index;
-  }
-  @Input() task!: Task; // Tarea recibida como entrada desde el componente padre
+  @Input() task: Task = {
+    itemName: '',
+    itemCategory: '',
+    itemPriority: '',
+    itemDate: '',
+    completed: false,
+    description: null,
+    id: 0 // Ensure id is initialized as a number
+  };
+
   categories = ['UNI', 'Casa', 'Trabajo', 'Personal', 'Otro'];
   taskCategory: number = 0;
 
@@ -35,12 +41,14 @@ export class EditTaskPage implements OnInit {
   }
 
   saveChanges() {
-    // Actualizar la tarea
-    this.task.itemCategory = this.categories[this.taskCategory]; // Asignar la categoría
+    // Assign the selected category to task.itemCategory
+    this.task.itemCategory = this.categories[this.taskCategory];
+
+    // Update the task using TaskService
     this.taskService.updateTask(this.task).subscribe(
       updatedTask => {
         console.log('Tarea actualizada exitosamente:', updatedTask);
-        this.dismiss();
+        this.dismiss(); // Close the modal after saving changes
       },
       error => {
         console.error('Error al actualizar la tarea', error);
