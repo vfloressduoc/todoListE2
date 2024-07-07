@@ -9,13 +9,13 @@
 
     <ion-card-content>
       <ion-item>
-        <ion-label position="stacked">Nombre de la Tarea</ion-label>
-        <ion-input [(ngModel)]="task.itemName" type="text"></ion-input>
+        <ion-label position="stacked" for="taskName">Nombre de la Tarea</ion-label>
+        <ion-input [(ngModel)]="task.itemName" type="text" id="taskName"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Prioridad</ion-label>
-        <ion-select [(ngModel)]="task.itemPriority">
+        <ion-label position="stacked" for="taskPriority">Prioridad</ion-label>
+        <ion-select [(ngModel)]="task.itemPriority" id="taskPriority"></ion-select>
           <ion-select-option value="importante">Importante</ion-select-option>
           <ion-select-option value="normal">Normal</ion-select-option>
           <ion-select-option value="baja">Baja</ion-select-option>
@@ -24,11 +24,11 @@
 
       <ion-item>
         <ion-icon name="calendar-outline" slot="start"></ion-icon>
-        <ion-label>Fecha Limite</ion-label>
+        <ion-label for="taskDate">Fecha Limite</ion-label>
         <ion-datetime-button datetime="datetime"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime" (ionChange)="handleDateChange($event)"></ion-datetime>
+            <ion-datetime id="taskDate" (ionChange)="handleDateChange($event)"></ion-datetime>
           </ng-template>
         </ion-modal>
       </ion-item>

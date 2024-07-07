@@ -9,12 +9,12 @@
 
   <ion-card>
     <ion-item>
-      <ion-textarea [(ngModel)]="taskName" placeholder="Escribe tu tarea"></ion-textarea>
+      <ion-textarea [(ngModel)]="taskName" placeholder="Escribe tu tarea" id="taskName"></ion-textarea>
     </ion-item>
 
     <ion-item>
       <ion-label>Prioridad</ion-label>
-      <ion-select [(ngModel)]="taskPriority">
+      <ion-select [(ngModel)]="taskPriority" id="taskPriority"></ion-select>
         <ion-select-option value="importante">Importante</ion-select-option>
         <ion-select-option value="normal">Normal</ion-select-option>
         <ion-select-option value="baja">Baja</ion-select-option>
@@ -42,6 +42,6 @@
       </ion-chip>
     </ion-item>
 
-    <ion-button class="ion-margin" expand="block" (click)="AddTask()"> Agregar Tarea </ion-button>
+    <ion-button class="ion-margin" expand="block" (click)="AddTask()" id="addTaskButton"> Agregar Tarea </ion-button>
   </ion-card>
 </ion-content>

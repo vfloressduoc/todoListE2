@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button id="menu-button"></ion-menu-button>
     </ion-buttons>
     <ion-item lines="none">
-      <ion-label class="title-text">
+      <ion-label class="title-text" id="archive-label">
         Archivo
       </ion-label>
     </ion-item>
@@ -12,23 +12,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="archive-content">
-  <ion-card *ngFor="let item of taskList; let i = index" class="ion-margin">
+  <ion-card *ngFor="let item of taskList; let i = index" class="ion-margin" id="task-card-{{i}}">
     <ion-card-header>
       <ion-card-subtitle>
-        <ion-label [style.color]="item.itemPriority === 'importante' ? 'red' : (item.itemPriority === 'baja' ? 'green' : 'orange')">
+        <ion-label [style.color]="item.itemPriority === 'importante' ? 'red' : (item.itemPriority === 'baja' ? 'green' : 'orange')" id="category-label-{{i}}">
           {{ item.itemCategory }}
         </ion-label>
         <ion-item>
-          <ion-icon *ngIf="item.itemPriority === 'importante'" color="danger" size="small" name="ellipse" slot="start"></ion-icon>
-          <ion-icon *ngIf="item.itemPriority === 'normal'" color="warning" size="small" name="ellipse" slot="start"></ion-icon>
-          <ion-icon *ngIf="item.itemPriority === 'baja'" color="success" size="small" name="ellipse" slot="start"></ion-icon>
-          <ion-label>{{ item.itemName }}</ion-label>
+          <ion-icon *ngIf="item.itemPriority === 'importante'" color="danger" size="small" name="ellipse" slot="start" id="priority-icon-{{i}}"></ion-icon>
+          <ion-icon *ngIf="item.itemPriority === 'normal'" color="warning" size="small" name="ellipse" slot="start" id="priority-icon-{{i}}"></ion-icon>
+          <ion-icon *ngIf="item.itemPriority === 'baja'" color="success" size="small" name="ellipse" slot="start" id="priority-icon-{{i}}"></ion-icon>
+          <ion-label id="item-name-label-{{i}}">{{ item.itemName }}</ion-label>
         </ion-item>
       </ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-label>Plazo: {{ item.itemDate | date:'fullDate' }}</ion-label>
+      <ion-label id="item-date-label-{{i}}">Plazo: {{ item.itemDate | date:'fullDate' }}</ion-label>
     </ion-card-content>
   </ion-card>
 </ion-content>
