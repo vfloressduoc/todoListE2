@@ -15,18 +15,18 @@
     <div class="form-container">
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input [(ngModel)]="email" type="email"></ion-input>
+        <ion-input [(ngModel)]="email" type="email" id="login-input-email"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contraseña</ion-label>
-        <ion-input [(ngModel)]="password" type="password"></ion-input>
+        <ion-input [(ngModel)]="password" type="password" id="login-input-pass"></ion-input>
       </ion-item>
 
       <div class="landing-buttons">
-        <ion-button expand="block" color="primary" (click)="login()" shape="round">
+        <ion-button expand="block" color="primary" (click)="login()" shape="round" id="login-btn-iniciar-sesion">
           Iniciar sesión
         </ion-button>
-        <ion-button expand="block" color="secondary" fill="clear" (click)="goToSignUp()" shape="round">
+        <ion-button expand="block" color="secondary" fill="clear" (click)="goToSignUp()" shape="round" id="login-btn-ir-a-crear-cuenta">
           ¿Nuevo aquí? ¡Crea tu cuenta!
         </ion-button>
       </div>
