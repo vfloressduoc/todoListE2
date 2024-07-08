@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.example.penguplan" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>PenguPlan</name>
+    <description>Aplicación PenguPlan</description>
+    <author email="val.floress@duocuc.cl">App Developer</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="ScrollEnabled" value="true" />
+    <preference name="android-minSdkVersion" value="21" />
+    <preference name="android-targetSdkVersion" value="30" />
+    <preference name="BackupWebStorage" value="none" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <icon src="task-list\src\assets\icon\penguicon.png" />
+        <splash src="res/android/splash.png" />
+    </platform>
+</widget>
