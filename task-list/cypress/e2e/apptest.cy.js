@@ -1,130 +1,126 @@
 describe('Todo App Test', () => {
     it('should navigate through Todo App', () => {
-        // Visit the app and login
+        // Visitar la aplicación e iniciar sesión
         cy.visit('localhost:8100/home');
 
-        // Click to navigate to create account
+        // Hacer clic para navegar a crear cuenta
         cy.get('#login-btn-ir-a-crear-cuenta').click();
 
-        // Wait for email input to be visible and interactable
+        // Esperar a que el campo de email sea visible e interactuable
         cy.get('#ion-input-2').should('be.visible').clear().type('testuser@example.com');
 
-        // Wait for password input to be visible and interactable
+        // Esperar a que el campo de contraseña sea visible e interactuable
         cy.get('#ion-input-3').should('be.visible').clear().type('password123');
 
-        // Click on sign up button
+        // Hacer clic en el botón de registro
         cy.get('#signup-btn-crear-cuenta').click();
 
-        // Wait for email login input to be visible and interactable
+        // Esperar a que el campo de email para iniciar sesión sea visible e interactuable
         cy.get('#login-input-email > .input-wrapper > .native-wrapper').should('be.visible').click();
         cy.get('#ion-input-0').should('be.visible').clear().type('testuser@example.com');
 
-        // Wait for password login input to be visible and interactable
+        // Esperar a que el campo de contraseña para iniciar sesión sea visible e interactuable
         cy.get('#ion-input-1').should('be.visible').clear().type('password123');
 
-        // Click on login button
+        // Hacer clic en el botón de iniciar sesión
         cy.get('#login-btn-iniciar-sesion').click();
 
-        // Wait for page transition and interactions to settle
+        // Esperar a que la transición de página y las interacciones se estabilicen
         cy.wait(2000);
 
-        // Click on elements as per your recorded test
+        // Hacer clic en elementos según tu prueba grabada
         cy.get('#todo-add-task > .md').click();
 
-        // Wait for the add task interface to fully load
+        // Esperar a que la interfaz de agregar tarea se cargue completamente
         cy.wait(2000);
 
-        // Input text in the textarea
+        // Introducir texto en el área de texto
         cy.get('#ion-textarea-0').click().type('Esta es una tarea');
 
-        // Wait for input to stabilize
+        // Esperar a que la entrada se estabilice
         cy.wait(1000);
 
-        // Click on the task priority dropdown
+        // Hacer clic en el menú desplegable de prioridad de tarea
         cy.get('#taskPriority').click();
 
-        // Wait for dropdown to fully open
+        // Esperar a que el menú desplegable se abra completamente
         cy.wait(1000);
 
-        // Select 'Normal' priority (assuming the popover opens automatically)
+        // Seleccionar prioridad 'Normal'
         cy.get(':nth-child(2) > .sc-ion-select-popover-md').click({ force: true });
 
-        // Click on the task category chip
+        // Hacer clic en el chip de categoría de tarea
         cy.get('#category-chip-2 > .sc-ion-label-md-h').click();
 
-        // Click on the "Agregar Tarea" button to add the task
+        // Hacer clic en el botón "Agregar Tarea" para añadir la tarea
         cy.get('#addTaskButton').click();
 
-        // Ensure task is added successfully (you can add assertions here)
-        // cy.contains('Task added successfully');
-
-        // Navigate through other parts of the app as per your test
+        // Navegar por otras partes de la aplicación según tu prueba
         cy.get('.can-go-back > .header-md > ion-toolbar.md > .buttons-first-slot > .sc-ion-buttons-md').click({ force: true });
 
-        // Wait for page transition
+        // Esperar a la transición de página
         cy.wait(1000);
 
         cy.get('#week-item > .sc-ion-label-md-h').click();
 
-        // Wait for page transition
+        // Esperar a la transición de página
         cy.wait(1000);
 
-        // Click on menu button to open menu
+        // Hacer clic en el botón del menú para abrir el menú
         cy.get('#menu-button').click({ force: true });
 
-        // Wait for menu to fully open
-        cy.wait(2000); // Increased wait time as requested
+        // Esperar a que el menú se abra completamente
+        cy.wait(2000); 
 
-        // Click on memories item in the menu to navigate to memories page
+        // Hacer clic en el elemento de recuerdos en el menú para navegar a la página de recuerdos
         cy.get('#memories-item').click({ force: true });
 
-        // Wait for memories page to load
+        // Esperar a que la página de recuerdos se cargue
         cy.wait(2000);
 
-        // Click on first thumbnail image to open it
+        // Hacer clic en la primera imagen en miniatura para abrirla
         cy.get('#thumbnail-image-1').click({ force: true });
 
-        // Wait for image modal to open
+        // Esperar a que el modal de imagen se abra
         cy.wait(2000);
 
-        // Click on share button in the modal
+        // Hacer clic en el botón de compartir en el modal
         cy.get('ion-icon[name="share"]').click({ force: true });
 
-        // Wait for sharing process to complete (assuming some process)
+        // Esperar a que el proceso de compartir se complete 
         cy.wait(2000);
 
-        // Close the image modal by clicking on close button with ID
+        // Cerrar el modal de imagen haciendo clic en el botón de cerrar con ID
         cy.get('#close-button').click({ force: true });
 
-        // Wait for modal to close and return to memories page
+        // Esperar a que el modal se cierre y volver a la página de recuerdos
         cy.wait(2000);
 
-        // Click on the second thumbnail image to open it (the one that will be deleted)
+        // Hacer clic en la sexta imagen en miniatura para abrirla (la que se eliminará)
         cy.get('#thumbnail-image-6').click({ force: true });
 
-        // Wait for image modal to open
+        // Esperar a que el modal de imagen se abra
         cy.wait(2000);
 
-        // Click on delete button in the modal
+        // Hacer clic en el botón de eliminar en el modal
         cy.get('#trash-icon').click({ force: true });
 
-        // Wait for deletion process to complete (assuming some process)
+        // Esperar a que el proceso de eliminación se complete 
         cy.wait(2000);
 
-
-        // Wait for page transition
+        // Esperar a la transición de página
         cy.wait(2000);
 
-        // Click on menu button to open menu again
+        // Hacer clic en el botón del menú para abrir el menú nuevamente
         cy.get('#menu-button').click({ force: true });
 
-        // Wait for menu to fully open
+        // Esperar a que el menú se abra completamente
         cy.wait(2000);
 
-        // Click on logout item in the menu
+        // Hacer clic en el elemento de cerrar sesión en el menú
         cy.get('#login-item').click({ force: true });
 
-        // Wait for logout process to complete (assuming some process)
-        cy.wait(3000); // Increased wait time before logout as requested
+        // Esperar a que el proceso de cierre de sesión se complete 
+        cy.wait(3000); 
     });
 });
