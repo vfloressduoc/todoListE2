@@ -2,6 +2,6 @@ Nombre de la aplicación: PenguPlan
 Descripción: Una aplicación para la gestión de tareas diarias.
 Versión: 2.0.0
 ID del paquete: com.penguinplan.app
-Correo del desarrollador: valentina@penguinplan.com
+Correo del desarrollador: val.floress@duocuc.cl
 Min SDK: 22
 Target SDK: 30
