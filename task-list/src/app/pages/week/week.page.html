@@ -48,7 +48,7 @@
         <p>Completado</p>
       </ion-item>
     
-      <ion-item button (click)="deleteTask(item)" id="delete-button-{{i}}"></ion-item>
+      <ion-item button (click)="deleteTask(item)" id="delete-button-{{i}}">
         <ion-icon name="trash-outline"></ion-icon>
         <p>Eliminar</p>
       </ion-item>
@@ -56,7 +56,7 @@
   </ion-card>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addTask()" id="add-task-button"></ion-fab-button>
+    <ion-fab-button (click)="addTask()" id="add-task-button">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

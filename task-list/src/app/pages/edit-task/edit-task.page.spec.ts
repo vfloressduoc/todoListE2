@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { EditTaskPage } from './edit-task.page';
 import { HttpClientModule } from '@angular/common/http';
+import { expect } from 'chai'; // Import the 'expect' function from the 'chai' library
 
 describe('EditTaskPage', () => {
   let component: EditTaskPage;
@@ -20,6 +21,6 @@ describe('EditTaskPage', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).to.be.ok; // Use the 'expect' function to make the assertion
   });
 });

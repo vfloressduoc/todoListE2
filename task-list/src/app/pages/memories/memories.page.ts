@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ImageViewModalPage } from './image-view-modal/image-view-modal.page';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -15,13 +15,12 @@ interface Memory {
   styleUrls: ['./memories.page.scss'],
 })
 export class MemoriesPage implements OnInit {
-
   memories: Memory[] = [];
-  imageSource: SafeResourceUrl | undefined;
 
   constructor(
     private modalController: ModalController,
     private domSanitizer: DomSanitizer,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
@@ -29,7 +28,7 @@ export class MemoriesPage implements OnInit {
   }
 
   loadDefaultMemories() {
-    // Cargar imágenes desde assets como ejemplos
+    // Load images from assets as examples
     for (let i = 1; i <= 9; i++) {
       const imageUrl = `assets/photos/photo${i}.jpg`;
       this.memories.push({
@@ -49,21 +48,17 @@ export class MemoriesPage implements OnInit {
         saveToGallery: false
       });
 
-      this.imageSource = this.domSanitizer.bypassSecurityTrustResourceUrl(image.webPath ? image.webPath : '');
-      if (this.imageSource) {
+      const imageUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(image.webPath ? image.webPath : '');
+      if (imageUrl) {
         const newMemory: Memory = {
           id: this.memories.length + 1,
-          thumbnailUrl: this.imageSource
+          thumbnailUrl: imageUrl
         };
         this.memories.push(newMemory);
       }
     } catch (error) {
-      console.error('Error al tomar la imagen', error);
+      console.error('Error taking picture', error);
     }
-  }
-
-  removeMemory(memoryId: number) {
-    this.memories = this.memories.filter(memory => memory.id !== memoryId);
   }
 
   async viewImage(memory: Memory) {
@@ -82,5 +77,13 @@ export class MemoriesPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  removeMemory(memoryId: number) {
+    this.memories = this.memories.filter(memory => memory.id !== memoryId);
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 }

@@ -4,7 +4,7 @@
       <ion-menu-button id="menu-button"></ion-menu-button>
     </ion-buttons>
     <ion-item lines="none">
-      <ion-label class="title-text" id="memorias-label"></ion-label>
+      <ion-label class="title-text" id="memorias-label">
         Memorias
       </ion-label>
     </ion-item>
@@ -23,8 +23,13 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="takePicture()" id="fab-button"></ion-fab-button>
+    <ion-fab-button (click)="takePicture()" id="fab-button">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button id="fab-back-button" (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>

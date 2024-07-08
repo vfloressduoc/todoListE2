@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import { Task } from '../../models/task.model';
-import { TaskService } from '../../services/task.service'; // Importar el servicio
+import { TaskService } from '../../services/task.service'; // Import the TaskService
 
 @Component({
   selector: 'app-add-task',
@@ -13,18 +13,17 @@ import { TaskService } from '../../services/task.service'; // Importar el servic
 export class AddTaskPage implements OnInit {
   showDateTimePicker = false;
   selectedDate: string = '';
-  priority: string = '';
   categories = ['UNI', 'Casa', 'Trabajo', 'Personal', 'Otro'];
 
   taskName: string = '';
   taskDate: string = '';
   taskPriority: string = '';
-  taskCategory: number = 0; // Variable para almacenar el índice de la categoría seleccionada
+  taskCategory: number = 0;
 
   constructor(
     public modalCtrl: ModalController,
     private datePipe: DatePipe,
-    private taskService: TaskService // Inyectar el servicio TaskService
+    private taskService: TaskService
   ) {}
 
   ngOnInit() {}
@@ -43,11 +42,11 @@ export class AddTaskPage implements OnInit {
 
   async AddTask() {
     const newTask: Task = {
-      id: 0, 
+      id: 0,
       itemName: this.taskName,
       itemDate: this.taskDate,
       itemPriority: this.taskPriority,
-      itemCategory: this.categories[this.taskCategory], // Utilizar el nombre de la categoría
+      itemCategory: this.categories[this.taskCategory],
       completed: false,
       description: null
     };

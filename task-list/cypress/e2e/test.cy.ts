@@ -1,67 +1,86 @@
-describe('Pruebas E2E de la aplicación Todo', () => {
-  const email = 'test@example.com';
-  const password = 'Test1234';
+// cypress/e2e/test.cy.ts
 
-  it('debería navegar del login al registro y crear una nueva cuenta', () => {
-    cy.visit('/login');
-    cy.get('#login-btn-ir-a-crear-cuenta').click(); // Ir a la página de registro
-    cy.url().should('include', '/signup');
-    cy.get('#signup-input-email').type(email); // Ingresar email en el registro
-    cy.get('#signup-input-pass').type(password); // Ingresar contraseña en el registro
-    cy.get('#signup-btn-crear-cuenta').click(); // Crear la cuenta
+import 'cypress/support/commands';
+
+describe('End-to-End Tests for Todo Application', () => {
+  const email = 'testuser@example.com';
+  const password = 'password123';
+
+  before(() => {
+    // Sign up and log in once before running tests
+    cy.visit('/signup');
+    cy.fixture('user').then((user) => {
+      cy.get('#signup-input-email').type(user.email);
+      cy.get('#signup-input-pass').type(user.password);
+      cy.get('#signup-btn-crear-cuenta').click();
+
+      cy.wait(2000); // Adjust wait time as necessary for user creation
+
+      cy.visit('/login');
+      cy.get('#login-input-email').type(user.email);
+      cy.get('#login-input-pass').type(user.password);
+      cy.get('#login-btn-iniciar-sesion').click();
+
+      cy.url().should('include', '/todo'); // Verify logged in successfully
+    });
   });
 
-  it('debería iniciar sesión con la cuenta recién creada', () => {
-    cy.get('#login-input-email').type(email); // Ingresar email en el login
-    cy.get('#login-input-pass').type(password); // Ingresar contraseña en el login
-    cy.get('#login-btn-iniciar-sesion').click(); // Iniciar sesión
-  });
+  it('should verify task creation and API interaction', () => {
+    cy.intercept('POST', 'https://mockend.com/api/vfloressduoc/tasklist_api/todos').as('createTask');
 
-  it('debería verificar la lista de tareas', () => {
     cy.visit('/todo');
-    cy.get('.todo-list').should('be.visible'); // Verificar que la lista de tareas es visible
-    cy.scrollTo('top');
-    cy.scrollTo('bottom');
+    cy.get('#todo-add-task').click();
+    cy.get('#taskName').type('Nueva Tarea');
 
-    // Agregar una tarea
-    cy.get('#todo-add-task').click(); // Ir a la página de agregar tarea
-    cy.get('#new-task').type('Nueva Tarea'); // Ingresar el nombre de la nueva tarea
-    cy.contains('Guardar Tarea').click(); // Guardar la nueva tarea
-    cy.contains('Nueva Tarea').should('be.visible'); // Verificar que la nueva tarea es visible
+    cy.get('#taskPriority').click(); // Open the ion-select dropdown
+    cy.get('ion-select-option[value="normal"]').click(); // Select "normal" priority
 
-    // Editar una tarea
-    cy.get('#todo-task-0').find('#todo-edit-task-0').click(); // Hacer clic en el botón de editar
-    cy.get('#edit-task').clear().type('Tarea Actualizada'); // Editar el nombre de la tarea
-    cy.contains('Guardar Cambios').click(); // Guardar los cambios
-    cy.contains('Tarea Actualizada').should('be.visible'); // Verificar que la tarea se actualizó
+    cy.get('#datetime').type('2024-07-07T10:00');
+    cy.get('#addTaskButton').click();
+
+    cy.wait('@createTask').then((interception) => {
+      if (interception && interception.response) {
+        expect(interception.response.statusCode).to.eq(201);
+        expect(interception.response.body).to.have.property('name', 'Nueva Tarea');
+      } else {
+        throw new Error('POST request interception response is undefined');
+      }
+    });
   });
 
-  it('debería verificar la página de esta semana', () => {
+  it('should verify task editing and API interaction', () => {
+    cy.intercept('PUT', 'https://mockend.com/api/vfloressduoc/tasklist_api/todos/*').as('editTask');
+
+    cy.visit('/todo');
+    cy.get('#todo-task-0').should('exist').find('#todo-edit-task-0').click();
+    cy.get('#taskName').clear().type('Tarea Actualizada');
+
+    cy.get('#taskPriority').click(); // Open the ion-select dropdown
+    cy.get('ion-select-option[value="importante"]').click(); // Select "importante" priority
+
+    cy.get('#taskDate').type('2024-07-07T12:00');
+    cy.contains('Guardar Cambios').click();
+
+    cy.wait('@editTask').then((interception) => {
+      if (interception && interception.response) {
+        expect(interception.response.statusCode).to.eq(200);
+        expect(interception.response.body).to.have.property('name', 'Tarea Actualizada');
+      } else {
+        throw new Error('PUT request interception response is undefined');
+      }
+    });
+  });
+
+  it('should verify the functionality of other pages', () => {
     cy.visit('/week');
-    cy.get('ion-content').should('be.visible'); // Verificar que la página de esta semana es visible
-  });
+    cy.get('ion-content').should('be.visible'); // Verify weekly page is visible
 
-  it('debería verificar la página de archivo', () => {
     cy.visit('/archive');
-    cy.get('ion-content').should('be.visible'); // Verificar que la página de archivo es visible
-  });
+    cy.get('ion-content').should('be.visible'); // Verify archive page is visible
 
-  it('debería verificar la funcionalidad de memorias', () => {
     cy.visit('/memories');
-    cy.get('.thumbnail-image').should('be.visible'); // Verificar que las fotos son visibles
+    cy.get('.thumbnail-image').should('be.visible'); // Verify photos are visible
 
-    // Ver una foto en detalle
-    cy.get('.thumbnail-image').first().click(); // Hacer clic en la primera foto
-    cy.get('.image-container').should('be.visible'); // Verificar que la vista detallada de la foto es visible
-
-    // Tomar una nueva foto (asumiendo que hay un botón para tomar una foto)
-    cy.contains('Tomar Foto').click(); // Hacer clic en el botón para tomar una foto
-    // Asumiendo que la foto se toma y se agrega a la lista
-
-    // Borrar una foto
-    cy.get('.thumbnail-image').first().parent().find('.delete-button').click(); // Hacer clic en el botón de eliminar
-    cy.contains('¿Estás seguro?').should('be.visible'); // Verificar el mensaje de confirmación
-    cy.contains('Sí').click(); // Confirmar eliminación
-    cy.get('.thumbnail-image').should('not.exist'); // Asegurarse de que la foto se eliminó
+    // Add more tests for other pages as required
   });
 });

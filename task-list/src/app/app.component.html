@@ -11,13 +11,15 @@
     
     <ion-content>
       <ion-list>
+        <!-- Menu items -->
         <ion-menu-toggle auto-hide="false">
-          <ion-item routerLink="/todo" id="todo-item"></ion-item>
+          <ion-item routerLink="/todo" id="todo-item">
             <ion-icon name="list" slot="start"></ion-icon>
             <ion-label>Cosas por hacer</ion-label>
           </ion-item>
         </ion-menu-toggle>
-
+        
+        <!-- Other menu items -->
         <ion-menu-toggle auto-hide="false">
           <ion-item routerLink="/week" id="week-item">
             <ion-icon name="calendar" slot="start"></ion-icon>
@@ -40,7 +42,7 @@
         </ion-menu-toggle>
 
         <ion-menu-toggle auto-hide="false">
-          <ion-item routerLink="/login" id="login-item"></ion-item>
+          <ion-item id="login-item" (click)="confirmLogout()">
             <ion-icon name="log-out" slot="start"></ion-icon>
             <ion-label>Cerrar sesión</ion-label>
           </ion-item>
@@ -49,5 +51,14 @@
     </ion-content>
   </ion-menu>
 
+  <!-- Router Outlet -->
   <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  <!-- Logout confirmation message -->
+  <ion-toast
+    *ngIf="showLogoutToast"
+    message="Cerrando sesión..."
+    duration="2000"
+    position="bottom"
+  ></ion-toast>
 </ion-app>

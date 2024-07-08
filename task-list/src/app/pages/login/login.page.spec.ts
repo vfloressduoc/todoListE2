@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginPage } from './login.page';
+import { expect } from 'chai'; // Import the expect function from the chai library
 
 describe('LoginPage', () => {
   let component: LoginPage;
@@ -12,6 +13,6 @@ describe('LoginPage', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).to.be.ok; // Use the to.be.ok assertion instead of toBeTruthy()
   });
 });

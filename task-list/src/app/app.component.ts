@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from './services/user.service';
 
@@ -10,11 +10,13 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   showMenu = false;
+  showLogoutToast = false;
 
   constructor(
     private platform: Platform,
     private router: Router,
     private userService: UserService,
+    private toastController: ToastController
   ) {
     this.initializeApp();
   }
@@ -30,11 +32,6 @@ export class AppComponent {
         if (event instanceof NavigationEnd) {
           const currentUrl = this.router.url;
           this.showMenu = this.shouldShowMenu(currentUrl);
-          if (currentUrl === '/home' && this.userService.isAuthenticated()) {
-            this.router.navigate(['/todo']);
-          } else if (currentUrl === '/home' && !this.userService.isAuthenticated()) {
-            this.router.navigate(['/login']);
-          }
         }
       });
     });
@@ -43,5 +40,26 @@ export class AppComponent {
   shouldShowMenu(url: string): boolean {
     const hideMenuRoutes = ['/login', '/signup', '/add-task', '/edit-task'];
     return !hideMenuRoutes.includes(url);
+  }
+
+  async confirmLogout() {
+    this.showLogoutToast = true;
+    const toast = await this.toastController.create({
+      message: 'Cerrando sesión...',
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+    
+    setTimeout(() => {
+      this.logoutConfirmed();
+    }, 2000); // Delay to simulate logout process
+  }
+
+  logoutConfirmed() {
+    console.log('Cerrando sesión...');
+    // Perform actual logout
+    this.userService.logout();
+    this.router.navigate(['/login']);
   }
 }
