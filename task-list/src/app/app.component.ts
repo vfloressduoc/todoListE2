@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, ToastController } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 import { UserService } from './services/user.service';
 
@@ -10,13 +10,13 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   showMenu = false;
-  showLogoutToast = false;
+  logoutAlert: HTMLIonAlertElement | null = null;
 
   constructor(
     private platform: Platform,
     private router: Router,
     private userService: UserService,
-    private toastController: ToastController
+    private alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -43,23 +43,49 @@ export class AppComponent {
   }
 
   async confirmLogout() {
-    this.showLogoutToast = true;
-    const toast = await this.toastController.create({
-      message: 'Cerrando sesión...',
-      duration: 2000,
-      position: 'bottom'
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Cerrar sesión',
+          handler: () => {
+            this.showLogoutAlert();
+          }
+        }
+      ]
     });
-    toast.present();
-    
-    setTimeout(() => {
-      this.logoutConfirmed();
-    }, 2000); // Delay to simulate logout process
+
+    await alert.present();
   }
 
-  logoutConfirmed() {
+  async showLogoutAlert() {
+    this.logoutAlert = await this.alertController.create({
+      message: 'Cerrando sesión...',
+      backdropDismiss: false, // Evita cerrar el alert tocando fuera de él
+    });
+
+    await this.logoutAlert.present();
+
+    setTimeout(() => {
+      this.logoutConfirmed();
+    }, 1000); // Delay de 1 segundo antes de cerrar sesión
+  }
+
+  async logoutConfirmed() {
     console.log('Cerrando sesión...');
     // Perform actual logout
     this.userService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      if (this.logoutAlert) {
+        this.logoutAlert.dismiss();
+        this.logoutAlert = null;
+      }
+    });
   }
 }

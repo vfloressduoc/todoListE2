@@ -19,7 +19,6 @@
           </ion-item>
         </ion-menu-toggle>
         
-        <!-- Other menu items -->
         <ion-menu-toggle auto-hide="false">
           <ion-item routerLink="/week" id="week-item">
             <ion-icon name="calendar" slot="start"></ion-icon>
@@ -51,14 +50,5 @@
     </ion-content>
   </ion-menu>
 
-  <!-- Router Outlet -->
   <ion-router-outlet id="main-content"></ion-router-outlet>
-
-  <!-- Logout confirmation message -->
-  <ion-toast
-    *ngIf="showLogoutToast"
-    message="Cerrando sesión..."
-    duration="2000"
-    position="bottom"
-  ></ion-toast>
 </ion-app>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { ToastController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -11,18 +11,36 @@ import { ToastController } from '@ionic/angular';
 export class LoginPage {
   email: string = '';
   password: string = '';
+  private routerSub: any;
+isLoading: any;
 
   constructor(
     private router: Router,
     private userService: UserService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private loadingController: LoadingController
   ) {}
 
+  ionViewWillEnter() {
+    this.clearFields();
+  }
+
   async login() {
+    const loading = await this.loadingController.create({
+      message: 'Iniciando sesión...',
+      duration: 2000
+    });
+
+    await loading.present();
+
     const user = this.userService.login(this.email, this.password);
     if (user) {
-      this.router.navigate(['/todo']);
+      setTimeout(async () => {
+        await loading.dismiss();
+        this.router.navigate(['/todo']);
+      }, 2000);
     } else {
+      await loading.dismiss();
       const toast = await this.toastController.create({
         message: 'Credenciales inválidas',
         duration: 2000,
@@ -40,5 +58,11 @@ export class LoginPage {
   clearFields() {
     this.email = '';
     this.password = '';
+  }
+
+  ngOnDestroy() {
+    if (this.routerSub) {
+      this.routerSub.unsubscribe();
+    }
   }
 }
