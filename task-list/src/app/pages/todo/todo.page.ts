@@ -1,8 +1,11 @@
+// todo.page.ts
+
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { AddTaskPage } from '../add-task/add-task.page';
 import { EditTaskPage } from '../edit-task/edit-task.page';
 import { TaskService } from '../../services/task.service';
+import { QuotesService } from '../../services/quotes.service'; 
 import { Task } from '../../models/task.model';
 
 @Component({
@@ -15,7 +18,12 @@ export class TodoPage implements OnInit {
   completedTaskList: Task[] = [];
   today: number = Date.now();
 
-  constructor(public modalCtrl: ModalController, private taskService: TaskService) {}
+  constructor(
+    public modalCtrl: ModalController,
+    private taskService: TaskService,
+    private quotesService: QuotesService, // Inject QuoteService
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.loadTasks(); // Load tasks when the page initializes
@@ -24,6 +32,9 @@ export class TodoPage implements OnInit {
   loadTasks() {
     this.taskService.getTasks().subscribe(tasks => {
       this.taskList = tasks.filter(task => !task.completed);
+
+      // Fetch and display random quote after tasks are loaded
+      this.quotesService.fetchRandomQuote();
     });
     this.loadCompletedTasks();
   }
