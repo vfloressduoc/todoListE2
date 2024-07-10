@@ -1,48 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Editar Tarea</ion-title>
+    <ion-icon name="close" slot="end" size="large" class="ion-padding" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-card>
-    <ion-card-header *ngIf="task">
-      <ion-card-subtitle>
-        <ion-label>{{ task.itemCategory }}</ion-label>
-        <ion-label>{{ task.itemName }}</ion-label>
-      </ion-card-subtitle>
-    </ion-card-header>
+  <ion-card *ngIf="task">
+    <ion-item>
+      <ion-label position="stacked">Nombre de la Tarea</ion-label>
+      <ion-input [(ngModel)]="task.itemName" placeholder="Escribe tu tarea" id="taskName"></ion-input>
+    </ion-item>
 
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked" for="taskName">Nombre de la Tarea</ion-label>
-        <ion-input [(ngModel)]="task.itemName" type="text" id="taskName"></ion-input>
-      </ion-item>
+    <ion-item>
+      <ion-label>Prioridad</ion-label>
+      <ion-select [(ngModel)]="task.itemPriority" id="taskPriority">
+        <ion-select-option value="importante">Importante</ion-select-option>
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="baja">Baja</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked" for="taskPriority">Prioridad</ion-label>
-        <ion-select [(ngModel)]="task.itemPriority" id="taskPriority">
-          <ion-select-option value="importante">Importante</ion-select-option>
-          <ion-select-option value="normal">Normal</ion-select-option>
-          <ion-select-option value="baja">Baja</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <ion-item>
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label>Fecha Limite</ion-label>
+      <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="handleDateChange($event)"></ion-datetime>
+    </ion-item>
 
-      <ion-item>
-        <ion-icon name="calendar-outline" slot="start"></ion-icon>
-        <ion-label for="taskDate">Fecha Limite</ion-label>
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="taskDate" (ionChange)="handleDateChange($event)"></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
+    <ion-item>
+      <ion-label>Categoria</ion-label>
+      <ion-select [(ngModel)]="task.itemCategory">
+        <ion-select-option *ngFor="let category of categories" [value]="category">{{ category }}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-      <ion-item>
-        <ion-label>Categoria</ion-label>
-        <ion-chip *ngFor="let category of categories; let i = index"
-          (click)="selectCategory(i)"
-          [color]="taskCategory === i ? 'primary' : 'light'">
-          <ion-label>{{ category }}</ion-label>
-        </ion-chip>
-      </ion-item>
-
-      <ion-button expand="block" (click)="saveChanges()">Guardar Cambios</ion-button>
-    </ion-card-content>
+    <ion-button expand="block" (click)="saveChanges()">Guardar Cambios</ion-button>
   </ion-card>
 </ion-content>

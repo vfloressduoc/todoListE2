@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TaskService } from '../../services/task.service';
 import { AddTaskPage } from '../add-task/add-task.page';
-import { Task } from '../../models/task.model';
 import { EditTaskPage } from '../edit-task/edit-task.page';
+import { TaskService } from '../../services/task.service';
+import { Task } from '../../models/task.model';
 
 @Component({
   selector: 'app-todo',
@@ -12,23 +12,26 @@ import { EditTaskPage } from '../edit-task/edit-task.page';
 })
 export class TodoPage implements OnInit {
   taskList: Task[] = [];
-  today: Date = new Date();
+  completedTaskList: Task[] = [];
+  today: number = Date.now();
 
-  constructor(private taskService: TaskService, public modalCtrl: ModalController) {}
+  constructor(public modalCtrl: ModalController, private taskService: TaskService) {}
 
   ngOnInit() {
-    this.loadTasks(); // Cargar las tareas al iniciar la página
+    this.loadTasks(); // Load tasks when the page initializes
   }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe(
-      tasks => {
-        this.taskList = tasks.filter(task => !task.completed);
-      },
-      error => {
-        console.error('Error loading tasks', error);
-      }
-    );
+    this.taskService.getTasks().subscribe(tasks => {
+      this.taskList = tasks.filter(task => !task.completed);
+    });
+    this.loadCompletedTasks();
+  }
+
+  loadCompletedTasks() {
+    this.taskService.getCompletedTasks().subscribe(tasks => {
+      this.completedTaskList = tasks;
+    });
   }
 
   async addTask() {
@@ -39,15 +42,9 @@ export class TodoPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         const newTaskObj: Task = data.data;
-        console.log('New Task Object:', newTaskObj);
-        this.taskService.updateTask(newTaskObj).subscribe(
-          () => {
-            this.loadTasks(); // Recargar las tareas después de agregar una nueva
-          },
-          error => {
-            console.error('Error updating task', error);
-          }
-        );
+        this.taskService.addTask(newTaskObj).subscribe(() => {
+          this.loadTasks(); // Reload tasks after adding a new one
+        });
       }
     });
 
@@ -57,20 +54,31 @@ export class TodoPage implements OnInit {
   async editTask(task: Task) {
     const modal = await this.modalCtrl.create({
       component: EditTaskPage,
-      componentProps: {
-        task: { ...task } // Pasar una copia de la tarea seleccionada al modal de edición
+      componentProps: { task },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        const updatedTaskObj: Task = data.data;
+        this.taskService.updateTask(updatedTaskObj).subscribe(() => {
+          this.loadTasks(); // Reload tasks after updating
+        });
       }
     });
-    await modal.present();
-  }
 
+    return await modal.present();
+  }
 
   completeTask(task: Task) {
     task.completed = true;
-    this.taskService.updateTask(task).subscribe(() => this.loadTasks());
+    this.taskService.updateTask(task).subscribe(() => {
+      this.loadTasks(); // Reload tasks after completing
+    });
   }
 
   deleteTask(task: Task) {
-    this.taskService.deleteTask(task.id).subscribe(() => this.loadTasks());
+    this.taskService.deleteTask(task.id).subscribe(() => {
+      this.loadTasks(); // Reload tasks after deleting
+    });
   }
 }

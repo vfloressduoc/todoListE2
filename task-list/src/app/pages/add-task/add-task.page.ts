@@ -1,69 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { DatePipe } from '@angular/common';
 import { Task } from '../../models/task.model';
-import { TaskService } from '../../services/task.service'; // Import the TaskService
 
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.page.html',
   styleUrls: ['./add-task.page.scss'],
-  providers: [DatePipe]
 })
-export class AddTaskPage implements OnInit {
-  showDateTimePicker = false;
-  selectedDate: string = '';
-  categories = ['UNI', 'Casa', 'Trabajo', 'Personal', 'Otro'];
+export class AddTaskPage {
+  task: Task = {
+    id: Date.now(),
+    completed: false,
+    description: null,
+    itemCategory: '',
+    itemDate: '',
+    itemName: '',
+    itemPriority: ''
+  };
 
-  taskName: string = '';
-  taskDate: string = '';
-  taskPriority: string = '';
-  taskCategory: number = 0;
+  categories: string[] = ['Uni', 'Personal', 'Trabajo', 'Casa'];  // Example categories
 
-  constructor(
-    public modalCtrl: ModalController,
-    private datePipe: DatePipe,
-    private taskService: TaskService
-  ) {}
+  constructor(public modalCtrl: ModalController) {}
 
-  ngOnInit() {}
-
-  async dismiss() {
-    await this.modalCtrl.dismiss();
+  dismiss() {
+    this.modalCtrl.dismiss();
   }
 
-  selectCategory(index: number) {
-    this.taskCategory = index;
+  saveTask() {
+    this.modalCtrl.dismiss(this.task);
   }
 
-  isSelected(index: number): boolean {
-    return this.taskCategory === index;
-  }
-
-  async AddTask() {
-    const newTask: Task = {
-      id: 0,
-      itemName: this.taskName,
-      itemDate: this.taskDate,
-      itemPriority: this.taskPriority,
-      itemCategory: this.categories[this.taskCategory],
-      completed: false,
-      description: null
-    };
-
-    this.taskService.addTask(newTask).subscribe(
-      () => {
-        console.log('Task added successfully');
-        this.dismiss();
-      },
-      error => {
-        console.error('Error adding task', error);
-      }
-    );
-  }
-
-  handleDateChange(event: CustomEvent) {
-    const date = new Date(event.detail.value);
-    this.taskDate = this.datePipe.transform(date, 'MMM dd yyyy HH:mm') || '';
+  handleDateChange(event: any) {
+    this.task.itemDate = event.detail.value;
   }
 }

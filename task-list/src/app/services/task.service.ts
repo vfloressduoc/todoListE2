@@ -1,42 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { Task } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'https://mockend.com/api/vfloressduoc/tasklist_api/todos';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl).pipe(
-      catchError(this.handleError<Task[]>('getTasks', []))
-    );
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    return of(tasks);
+  }
+
+  getCompletedTasks(): Observable<Task[]> {
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const completedTasks = tasks.filter((task: Task) => task.completed);
+    return of(completedTasks);
   }
 
   updateTask(task: Task): Observable<any> {
-    const url = `${this.apiUrl}/${task.id}`;
-    console.log('Update Task URL:', url);
-    return this.http.put(url, task).pipe(
-      catchError(this.handleError<any>('updateTask'))
-    );
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const updatedTasks = tasks.map((t: Task) => (t.id === task.id ? task : t));
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    return of(task);
   }
 
   deleteTask(id: number): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url).pipe(
-      catchError(this.handleError<any>('deleteTask'))
-    );
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const updatedTasks = tasks.filter((task: Task) => task.id !== id);
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    return of(null);
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task).pipe(
-      catchError(this.handleError<Task>('addTask'))
-    );
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    tasks.push(task);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    return of(task);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

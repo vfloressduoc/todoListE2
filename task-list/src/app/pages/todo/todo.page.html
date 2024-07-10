@@ -26,7 +26,6 @@
           <ion-icon *ngIf="item.itemPriority === 'importante'" color="danger" size="small" name="ellipse" slot="start"></ion-icon>
           <ion-icon *ngIf="item.itemPriority === 'normal'" color="warning" size="small" name="ellipse" slot="start"></ion-icon>
           <ion-icon *ngIf="item.itemPriority === 'baja'" color="success" size="small" name="ellipse" slot="start"></ion-icon>
-
           <ion-label>{{ item.itemName }}</ion-label>
         </ion-item>
       </ion-card-subtitle>
@@ -41,12 +40,10 @@
         <ion-icon name="pencil-outline"></ion-icon>
         <p>Editar</p>
       </ion-item>
-    
       <ion-item button (click)="completeTask(item)" id="todo-complete-task-{{i}}">
         <ion-icon name="checkmark-outline"></ion-icon>
         <p>Completado</p>
       </ion-item>
-    
       <ion-item button (click)="deleteTask(item)" id="todo-delete-task-{{i}}">
         <ion-icon name="trash-outline"></ion-icon>
         <p>Eliminar</p>
