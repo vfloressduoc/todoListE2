@@ -11,27 +11,38 @@
         <ion-textarea [(ngModel)]="task.itemName" placeholder="Escribe tu tarea" id="taskName"></ion-textarea>
       </ion-item>
   
-      <ion-item>
+      <ion-item lines="none">
+        <ion-icon name="flag-outline" slot="start"></ion-icon>
         <ion-label>Prioridad</ion-label>
-        <ion-select [(ngModel)]="task.itemPriority" id="taskPriority">
+        <ion-select [(ngModel)]="task.itemPriority" id="taskPriority" interface="popover" class="custom-dropdown">
           <ion-select-option value="importante">Importante</ion-select-option>
           <ion-select-option value="normal">Normal</ion-select-option>
           <ion-select-option value="baja">Baja</ion-select-option>
         </ion-select>
       </ion-item>
   
+  
       <ion-item>
         <ion-icon name="calendar-outline" slot="start"></ion-icon>
         <ion-label>Fecha Limite</ion-label>
-        <ion-datetime displayFormat="MMM DD, YYYY" (ionChange)="handleDateChange($event)"></ion-datetime>
-      </ion-item>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+                <ion-datetime id="datetime" (ionChange)="handleDateChange($event)"></ion-datetime>
+            </ng-template>
+        </ion-modal>
+    </ion-item>
+
   
-      <ion-item>
-        <ion-label>Categoria</ion-label>
-        <ion-select [(ngModel)]="task.itemCategory">
-          <ion-select-option *ngFor="let category of categories" [value]="category">{{ category }}</ion-select-option>
-        </ion-select>
-      </ion-item>
+    <ion-item>
+      <ion-label>Categoria</ion-label>
+  </ion-item>
+
+  <ion-item>
+      <ion-chip *ngFor="let category of categories; let i = index" (click)="selectCategory(i)" [color]="isSelected(i) ? 'primary' : 'light'" id="category-chip-{{ i }}">
+          <ion-label>{{ category }}</ion-label>
+      </ion-chip>
+  </ion-item>
   
       <ion-button class="ion-margin" expand="block" (click)="saveTask()"> Agregar Tarea </ion-button>
     </ion-card>

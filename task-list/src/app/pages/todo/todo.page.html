@@ -32,7 +32,7 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-label>Plazo: {{ item.itemDate | date:'fullDate' }}</ion-label>
+      <ion-label *ngIf="item.itemDate">Plazo: {{ item.itemDate | date:'fullDate' }}</ion-label>
     </ion-card-content>
 
     <ion-row>
