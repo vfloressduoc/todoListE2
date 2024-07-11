@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { AddTaskPage } from './add-task.page';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { expect } from 'chai'; // Import the expect assertion method
 
 describe('AddTaskPage', () => {
   let component: AddTaskPage;
@@ -23,6 +24,6 @@ describe('AddTaskPage', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).to.be.ok; // Use the 'to.be.ok' assertion method instead of 'toBeTruthy'
   });
 });

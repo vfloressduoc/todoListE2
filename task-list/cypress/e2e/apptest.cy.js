@@ -120,6 +120,7 @@ describe('Todo App Test', () => {
         // Hacer clic en el elemento de cerrar sesión en el menú
         cy.get('#login-item').click({ force: true });
 
+        
         // Esperar a que el proceso de cierre de sesión se complete 
         cy.wait(3000); 
     });
