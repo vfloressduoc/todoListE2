@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser'; // Import SafeResourceUrl and DomSanitizer
 
 @Component({
   selector: 'app-image-view-modal',
@@ -9,13 +10,14 @@ import { ToastController } from '@ionic/angular';
 })
 export class ImageViewModalPage {
 
-  @Input() imageUrl: string = '';
-  @Input() memoryId: string = '';
+  @Input() imageUrl: SafeResourceUrl = ''; // Ensure imageUrl is correctly typed as SafeResourceUrl
+  @Input()  memoryId: number | undefined;
 
   constructor(
     private modalController: ModalController,
     private toastController: ToastController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private domSanitizer: DomSanitizer // Inject DomSanitizer
   ) {}
 
   close() {
@@ -29,7 +31,6 @@ export class ImageViewModalPage {
   }
   
   delete() {
-    console.log('Eliminando imagen:', this.memoryId);
     this.modalController.dismiss({ deleted: true });
   }
 
