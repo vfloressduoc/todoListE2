@@ -23,6 +23,8 @@
           <ion-icon *ngIf="item.itemPriority === 'normal'" color="warning" size="small" name="ellipse" slot="start" id="priority-icon-{{i}}"></ion-icon>
           <ion-icon *ngIf="item.itemPriority === 'baja'" color="success" size="small" name="ellipse" slot="start" id="priority-icon-{{i}}"></ion-icon>
           <ion-label id="item-name-label-{{i}}">{{ item.itemName }}</ion-label>
+          <!-- Add delete button -->
+          <ion-button color="danger" size="small" slot="end" (click)="deleteTask(item)">Eliminar</ion-button>
         </ion-item>
       </ion-card-subtitle>
     </ion-card-header>

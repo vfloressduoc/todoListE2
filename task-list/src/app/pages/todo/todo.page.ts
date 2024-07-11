@@ -1,5 +1,3 @@
-// todo.page.ts
-
 import { Component, OnInit } from '@angular/core';
 import { ModalController, AlertController } from '@ionic/angular';
 import { AddTaskPage } from '../add-task/add-task.page';
@@ -21,19 +19,18 @@ export class TodoPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     private taskService: TaskService,
-    private quotesService: QuotesService, // Inject QuoteService
+    private quotesService: QuotesService, 
     private alertController: AlertController
   ) {}
 
   ngOnInit() {
-    this.loadTasks(); // Load tasks when the page initializes
+    this.loadTasks(); 
   }
 
   loadTasks() {
     this.taskService.getTasks().subscribe(tasks => {
       this.taskList = tasks.filter(task => !task.completed);
 
-      // Fetch and display random quote after tasks are loaded
       this.quotesService.fetchRandomQuote();
     });
     this.loadCompletedTasks();
@@ -54,7 +51,7 @@ export class TodoPage implements OnInit {
       if (data.data) {
         const newTaskObj: Task = data.data;
         this.taskService.addTask(newTaskObj).subscribe(() => {
-          this.loadTasks(); // Reload tasks after adding a new one
+          this.loadTasks(); 
         });
       }
     });
@@ -72,7 +69,7 @@ export class TodoPage implements OnInit {
       if (data.data) {
         const updatedTaskObj: Task = data.data;
         this.taskService.updateTask(updatedTaskObj).subscribe(() => {
-          this.loadTasks(); // Reload tasks after updating
+          this.loadTasks(); 
         });
       }
     });
@@ -83,13 +80,13 @@ export class TodoPage implements OnInit {
   completeTask(task: Task) {
     task.completed = true;
     this.taskService.updateTask(task).subscribe(() => {
-      this.loadTasks(); // Reload tasks after completing
+      this.loadTasks(); 
     });
   }
 
   deleteTask(task: Task) {
     this.taskService.deleteTask(task.id).subscribe(() => {
-      this.loadTasks(); // Reload tasks after deleting
+      this.loadTasks(); 
     });
   }
 }
