@@ -3,7 +3,6 @@ import { ModalController, AlertController } from '@ionic/angular';
 import { AddTaskPage } from '../add-task/add-task.page';
 import { EditTaskPage } from '../edit-task/edit-task.page';
 import { TaskService } from '../../services/task.service';
-import { QuotesService } from '../../services/quotes.service'; 
 import { Task } from '../../models/task.model';
 
 @Component({
@@ -19,7 +18,6 @@ export class TodoPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     private taskService: TaskService,
-    private quotesService: QuotesService, 
     private alertController: AlertController
   ) {}
 
@@ -30,8 +28,6 @@ export class TodoPage implements OnInit {
   loadTasks() {
     this.taskService.getTasks().subscribe(tasks => {
       this.taskList = tasks.filter(task => !task.completed);
-
-      this.quotesService.fetchRandomQuote();
     });
     this.loadCompletedTasks();
   }

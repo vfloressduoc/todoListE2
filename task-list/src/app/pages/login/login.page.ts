@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { QuotesService } from '../../services/quotes.service';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +13,14 @@ export class LoginPage {
   email: string = '';
   password: string = '';
   private routerSub: any;
-isLoading: any;
+  isLoading: any;
 
   constructor(
     private router: Router,
     private userService: UserService,
     private toastController: ToastController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private quotesService: QuotesService
   ) {}
 
   ionViewWillEnter() {
@@ -37,7 +39,9 @@ isLoading: any;
     if (user) {
       setTimeout(async () => {
         await loading.dismiss();
-        this.router.navigate(['/todo']);
+        this.router.navigate(['/todo']).then(() => {
+          this.quotesService.fetchRandomMessage(); // Mostrar la alerta después de la navegación
+        });
       }, 2000);
     } else {
       await loading.dismiss();
@@ -66,3 +70,5 @@ isLoading: any;
     }
   }
 }
+
+export default LoginPage;
