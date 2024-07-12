@@ -3,6 +3,7 @@ import { ModalController, NavController, ActionSheetController } from '@ionic/an
 import { ImageViewModalPage } from './image-view-modal/image-view-modal.page';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 interface Memory {
   id: number;
   thumbnailUrl: string;
@@ -32,18 +33,7 @@ export class MemoriesPage implements OnInit {
   loadMemories() {
     const storedMemories = localStorage.getItem('memories');
     if (storedMemories) {
-    } else {
-      this.loadDefaultMemories();
-    }
-  }
-
-  loadDefaultMemories() {
-    for (let i = 1; i <= 9; i++) {
-      const imageUrl = `assets/photos/photo${i}.jpg`;
-      this.memories.push({
-        id: i,
-        thumbnailUrl: imageUrl
-      });
+      this.memories = JSON.parse(storedMemories);
     }
   }
 
@@ -133,9 +123,8 @@ export class MemoriesPage implements OnInit {
 
     return await modal.present();
   }
+
   goBack() {
     this.navCtrl.back();
   }
-
 }
-

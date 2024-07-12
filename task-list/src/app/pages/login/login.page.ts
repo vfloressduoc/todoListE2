@@ -40,7 +40,7 @@ export class LoginPage {
       setTimeout(async () => {
         await loading.dismiss();
         this.router.navigate(['/todo']).then(() => {
-          this.quotesService.fetchRandomMessage(); // Mostrar la alerta después de la navegación
+          this.quotesService.handleMessages(); // Mostrar la alerta después de la navegación
         });
       }, 2000);
     } else {

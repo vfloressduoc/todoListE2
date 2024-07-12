@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser'; // Import SafeResourceUrl and DomSanitizer
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-image-view-modal',
@@ -10,14 +10,14 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser'; // Im
 })
 export class ImageViewModalPage {
 
-  @Input() imageUrl: SafeResourceUrl = ''; // Ensure imageUrl is correctly typed as SafeResourceUrl
-  @Input()  memoryId: number | undefined;
+  @Input() imageUrl: SafeResourceUrl = '';
+  @Input() memoryId: number | undefined;
 
   constructor(
     private modalController: ModalController,
     private toastController: ToastController,
     private navCtrl: NavController,
-    private domSanitizer: DomSanitizer // Inject DomSanitizer
+    private domSanitizer: DomSanitizer
   ) {}
 
   close() {
